@@ -74,11 +74,13 @@ def Problem5():
     }
     x0 = np.array([1.2458,1.2458,0.0101,200,0,0])
     
-    N=2000
+    N=1000
     d=np.zeros(N)
     #Sugar intake tests
-    d[300]=10
-    d[350]=20
+    d[200]=10
+    d[250]=15
+    
+    noiseSD = 2
     
     Kp=0.1
     Ti=800
@@ -86,7 +88,7 @@ def Problem5():
     Ts=5
     us=25.04
     
-    ts,xs = pd.runPIDControl(parm, x0, Kp, Ti, Td, Ts, us, N, d)
+    ts,xs = pd.runPIDControl(parm, x0, Kp, Ti, Td, Ts, us, N, d, noiseSD)
     
     plt.plot(ts,xs[:,3])
     plt.title('Min: {}'.format(np.amin(xs[:,3])))

@@ -23,7 +23,7 @@ def PIDControl(i, r, y, y_prev, us, Kp, Ti, Td, Ts):
     return (us+P+I+D, I)
 
 
-def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us,N=500,d=None):
+def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us,N=500,d=None,noiseSD = 0):
     if d is None:
         d = np.zeros(N)
     
@@ -45,7 +45,7 @@ def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us,N=500,d=None):
         
         t = t+Ts
         x = xnext[-1,:]
-        x[3] = x[3]#*np.random.normal(1,0.01,1)[0]  #Gaussian noise to blood glucose
+        x[3] = x[3]+np.random.normal(0,noiseSD,1)[0]  #Gaussian noise to blood glucose
         xs += [x]
         ts += [t]
         
