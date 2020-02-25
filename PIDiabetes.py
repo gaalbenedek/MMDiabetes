@@ -23,7 +23,6 @@ def PIDControl(i, r, y, y_prev, us, Kp, Ti, Td, Ts):
     return (us+P+I+D, I)
 
 
-def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us):
 def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us,N=500):
     I=0
     t=0
@@ -35,7 +34,6 @@ def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us,N=500):
     r = 108
     us = 108 #What is insulin steady state?
     d=0
-    for loop in range(0,500):
     for loop in range(0,N):
         u, I = PIDControl(I,r,x[3],y_prev, us, Kp,Ti,Td,Ts)
         y_prev = x[3]
