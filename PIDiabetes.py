@@ -1,3 +1,9 @@
+import numpy as np
+import scipy
+import scipy.integrate
+from matplotlib import pyplot as plt
+
+
 def MVPModel(x,t,parm,u,d):
     xp = [
             u/(parm["tau1"]*parm["C1"]) - x[0]/parm["tau1"], #I sc prime
