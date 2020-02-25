@@ -23,7 +23,10 @@ def PIDControl(i, r, y, y_prev, us, Kp, Ti, Td, Ts):
     return (us+P+I+D, I)
 
 
-def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us,N=500):
+def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us,N=500,d=None):
+    if d is None:
+        d = np.zeros(N)
+    
     I=0
     t=0
     ts = []
@@ -32,16 +35,18 @@ def runPIDControl(parm,x0,Kp,Ti,Td,Ts,us,N=500):
     xs = []+[x]
     y_prev=x[3]
     r = 108
-    us = 108 #What is insulin steady state?
-    d=0
+    
     for loop in range(0,N):
         u, I = PIDControl(I,r,x[3],y_prev, us, Kp,Ti,Td,Ts)
         y_prev = x[3]
         if u<0:
             u=0
-        xnext = scipy.integrate.odeint(MVPModel,x, t=np.linspace(0,Ts,10),args=(parm,u,d))
+        xnext = scipy.integrate.odeint(MVPModel,x, t=np.linspace(0,Ts,10),args=(parm,u,d[loop]))
+        
         t = t+Ts
         x = xnext[-1,:]
+        x[3] = x[3]#*np.random.normal(1,0.01,1)[0]  #Gaussian noise to blood glucose
         xs += [x]
         ts += [t]
+        
     return (np.array(ts),np.array(xs))
