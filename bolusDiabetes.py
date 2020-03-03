@@ -46,7 +46,7 @@ def findOptimalU(x0, d0, parm):
     phis = []
     
     
-    #Do u estimates
+    #Recursively estimate best U
     precision = 5000
     minU = 10000
     
@@ -60,8 +60,6 @@ def findOptimalU(x0, d0, parm):
         #plt.xlabel("bolus [mU]")
         #plt.plot(Us,phis)
         #plt.show()
-    
-        #Then, do finer estimate of minimum
         minU = Us[np.argmin(phis)]
         
         precision /= 2
@@ -69,10 +67,10 @@ def findOptimalU(x0, d0, parm):
     #Then, this is the best U
     optimalU = minU
         
-    plt.ylabel("Blood glucose")
+    plt.ylabel("Blood glucose [mg/dL]")
     plt.xlabel("Time [min]")
     plt.title("Bolus guesses, d0=" + str(d0) + "g carbs")
-    plt.savefig("bolusguess"+str(d0)+".svg", format="svg")
+    plt.savefig("bolusguess"+str(d0)+".pdf", format="pdf")
     plt.show()
     plt.ylabel("phi")
     plt.xlabel("bolus [mU]")
@@ -123,6 +121,6 @@ def Problem9():
     plt.plot(d0s,optimalUs, 'o')
     plt.ylabel("Bolus [mU]")
     plt.xlabel("Carbs in meal [g]")
-    plt.savefig("bolusplot.svg", format="svg")
+    plt.savefig("bolusplot.pdf", format="pdf")
     plt.show()
     
