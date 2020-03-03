@@ -46,48 +46,32 @@ def phi(x0, u0, d0, parm):
 def findOptimalU(x0, d0, parm):
     phis = []
     
-    #First, do rough estimate of minimum
-    Us = [i*2000 for i in range(0,10)]
-    for U in Us:
-        phis += [phi(x0,U,d0,parm)]
     
-    plt.ylabel("Blood glucose")
-    plt.xlabel("Time [min]")
-    plt.show()
-    plt.ylabel("phi")
-    plt.xlabel("bolus [mU]")
-    plt.plot(Us,phis)
-    plt.show()
+    #Do u estimates
+    precision = 10000
+    minU = 100000
     
-    #Then, do finer estimate of minimum
-    minU = Us[np.argmin(phis)]
-    
-    Us = [i*100+minU for i in range(-16,16)]
-    phis = [];
-    for U in Us:
-        phis += [phi(x0,U,d0,parm)]
-    
-    plt.ylabel("Blood glucose")
-    plt.xlabel("Time [min]")
-    plt.show()
-    plt.ylabel("phi")
-    plt.xlabel("bolus [mU]")
-    plt.plot(Us,phis)
-    plt.show()
-    
-    minU = Us[np.argmin(phis)]
-    
-    Us = [i*10+minU for i in range(-10,10)]
-    phis = [];
-    for U in Us:
-        phis += [phi(x0,U,d0,parm)]
+    for loop in range(0,5):
+        phis = []
+        Us = [i*precision+minU for i in range(-11,11)]
+        for U in Us:
+            phis += [phi(x0,U,d0,parm)]
         
-    plt.ylabel("Blood glucose")
-    plt.xlabel("Time [min]")
-    plt.show()
+        plt.ylabel("Blood glucose")
+        plt.xlabel("Time [min]")
+        plt.show()
+        plt.ylabel("phi")
+        plt.xlabel("bolus [mU]")
+        plt.plot(Us,phis)
+        plt.show()
+    
+        #Then, do finer estimate of minimum
+        minU = Us[np.argmin(phis)]
+        
+        precision /= 10
     
     #Then, this is the best U
-    optimalU = Us[np.argmin(phis)]
+    optimalU = minU
         
     plt.ylabel("phi")
     plt.xlabel("bolus [mU]")
