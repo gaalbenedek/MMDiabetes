@@ -90,9 +90,11 @@ def Problem5():
     
     ts,xs = pd.runPIDControl(parm, x0, Kp, Ti, Td, Ts, us, N, d, noiseSD)
     
-    plt.plot(ts,xs[:,3])
-    plt.title('Min: {}'.format(np.amin(xs[:,3])))
-    
+    plt.plot(ts,xs[:,3],label='d(200) = {}, Min: {} \nd(250) = {}'.format(d[200],round(np.amin(xs[:,3]),2),d[250]))
+    plt.title('Blood glucose level under PID control')
+    plt.xlabel('Time [s]')
+    plt.ylabel('Blood glucose [mg/dL]')
+    plt.legend()
 
 Problem5()
     
